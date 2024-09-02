@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <DEPLOYMENT-NAME>
+  labels:
+    app: <LABEL-FOR-SELECTOR>
+  namespace: <NAME-SPACE>
+spec:
+  replicas: <NUMBER-OF-PODs>
+  selector:
+    matchLabels:
+      app: <LABEL-FOR-SELECTOR-POD>
+  template:
+    metadata:
+      name: <POD-NAME>
+      labels:
+        app: <LABEL-FOR-SELECTOR-POD>
+    spec:
+      containers:
+      - name: <CONTAINER-NAME>
+        image: <IMAGE-KIND>
+     nodeAffinity:
+       requiredDuringSchedulingIgnoredDuringExecution:
+         nodeSelectorTerms:
+           - matchExpressions:
+               - key: "size"
+                 operator: "In"
+                 values:
+                   - "large"
+                   - "small"
+      tolerations:
+        - key: "app"
+          value: "blue"
+          operator: "Equal"
+          effect: "NoSchedule"
